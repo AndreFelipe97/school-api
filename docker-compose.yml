@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  db:
+    build: .
+    container_name: store-db
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - .docker/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: store
+      POSTGRES_DB: store
