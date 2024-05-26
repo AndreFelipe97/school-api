@@ -25,6 +25,10 @@ export class CoursesService {
     return course;
   }
 
+  async findByName(name: string): Promise<Courses> {
+    return await this.coursesRepository.findOne({ where: { name } });
+  }
+
   async create({ name, description, cover, registrations, started }): Promise<boolean> {
     const courseExists = await this.coursesRepository.findOne({ where: { name } });
 

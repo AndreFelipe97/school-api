@@ -6,6 +6,19 @@ export class CourseSeedService {
   constructor(private readonly coursesService: CoursesService) { }
 
   async create() {
+    const course1 = await this.coursesService.findByName('Desenvolvimento Web com React e Next.js');
+    const course2 = await this.coursesService.findByName('Introdução à Inteligência Artificial');
+    const course3 = await this.coursesService.findByName('Fotografia para Iniciantes');
+    const course4 = await this.coursesService.findByName('Inglês Instrumental para o Mercado de Trabalho');
+    const course5 = await this.coursesService.findByName('Finanças Pessoais para Iniciantes');
+    const course6 = await this.coursesService.findByName('Culinária Vegetariana');
+    const course7 = await this.coursesService.findByName('Yoga para Iniciantes');
+    const course8 = await this.coursesService.findByName('Produtividade Pessoal');
+
+    if (course1 || course2 || course3 || course4 || course5 || course6 || course7 || course8) {
+      return;
+    }
+
     await this.coursesService.create({
       name: "Desenvolvimento Web com React e Next.js",
       description: "Aprenda a criar websites modernos e interativos com as tecnologias mais populares do mercado.",

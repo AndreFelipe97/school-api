@@ -5,9 +5,7 @@ import { CreateCoursesDto, UpdateCoursesDto } from 'src/dtos/Dto';
 import { Courses } from 'src/entities/courses.entity';
 import { CoursesService } from 'src/services/courses/courses.service';
 
-@UseGuards(AuthGuard)
 @ApiTags('Courses')
-@ApiBearerAuth()
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) { }
@@ -27,6 +25,8 @@ export class CoursesController {
     return user;
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Post()
   async create(
     @Body() { name, description, registrations, cover, started }: CreateCoursesDto,
@@ -43,6 +43,8 @@ export class CoursesController {
     return response.status(204).send();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Put(':id')
   async update(
     @Param('id') id: number,
@@ -60,6 +62,8 @@ export class CoursesController {
     return response.status(204).send();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   async delete(@Param('id') id: number, @Res() response) {
     await this.coursesService.delete(id);
