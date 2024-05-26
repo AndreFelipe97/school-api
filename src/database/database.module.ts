@@ -6,10 +6,13 @@ import { SeedsModule } from './seeds/seeds.module';
 import { UserSeedService } from './seeds-service/user-seed/user-seed.service';
 import { UsersModule } from 'src/modules/users/users.module';
 import { Courses } from 'src/entities/courses.entity';
+import { CourseSeedService } from './seeds-service/course-seed/course-seed.service';
+import { CoursesModule } from 'src/modules/courses/courses.module';
 
 @Module({
   imports: [
     UsersModule,
+    CoursesModule,
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         return {
@@ -27,6 +30,6 @@ import { Courses } from 'src/entities/courses.entity';
     }),
     SeedsModule,
   ],
-  providers: [UserSeedService],
+  providers: [UserSeedService, CourseSeedService],
 })
 export class DatabaseModule { }

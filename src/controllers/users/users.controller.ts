@@ -15,13 +15,13 @@ import { CreateUsersDto } from 'src/dtos/Dto';
 import { User } from 'src/entities/users.entity';
 import { UsersService } from 'src/services/users/users.service';
 
-@UseGuards(AuthGuard)
 @ApiTags('users')
-@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get()
   async index(): Promise<User[]> {
     const users = await this.usersService.findAll();
@@ -29,6 +29,8 @@ export class UsersController {
     return users;
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   async detail(@Param('id') id: number): Promise<User> {
     const user = await this.usersService.findById(id);
@@ -51,6 +53,8 @@ export class UsersController {
     return response.status(204).send();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Put(':id')
   async update(
     @Param('id') id: number,
@@ -67,6 +71,8 @@ export class UsersController {
     return response.status(204).send();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   async delete(@Param('id') id: number, @Res() response) {
     await this.usersService.delete(id);
