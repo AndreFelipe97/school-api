@@ -5,6 +5,7 @@ import { User } from 'src/entities/users.entity';
 import { SeedsModule } from './seeds/seeds.module';
 import { UserSeedService } from './seeds-service/user-seed/user-seed.service';
 import { UsersModule } from 'src/modules/users/users.module';
+import { Courses } from 'src/entities/courses.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { UsersModule } from 'src/modules/users/users.module';
           username: configService.get('DATABASE_USERNAME'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE') as string,
-          entities: [User],
+          entities: [User, Courses],
           synchronize: true,
         };
       },
