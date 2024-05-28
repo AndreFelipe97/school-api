@@ -11,8 +11,14 @@ export class CoursesService {
     private readonly coursesRepository: Repository<Courses>,
   ) { }
 
-  async findAll(): Promise<Courses[]> {
-    return await this.coursesRepository.find();
+  async findAll(id?: number): Promise<Courses[]> {
+    const courses = await this.coursesRepository.query(`
+      select c.*, uc.id as userCourseId, uc."registrationCanceled", uc.registered  from courses c 
+      left join "usersCourses" uc 
+      on c.id = uc."courseId" ${id ? `${`and uc."userId" = ${id}`}` : ""}  
+    `);
+
+    return courses;
   }
 
   async findById(id: number): Promise<Courses> {

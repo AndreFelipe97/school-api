@@ -10,7 +10,6 @@ import { CoursesService } from 'src/services/courses/courses.service';
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) { }
 
-
   @Get()
   async index(): Promise<Courses[]> {
     const users = await this.coursesService.findAll();
@@ -19,6 +18,13 @@ export class CoursesController {
   }
 
   @Get(':id')
+  async indexId(@Param('id') id?: number): Promise<Courses[]> {
+    const users = await this.coursesService.findAll(id);
+
+    return users;
+  }
+
+  @Get('details/:id')
   async detail(@Param('id') id: number): Promise<Courses> {
     const user = await this.coursesService.findById(id);
 
