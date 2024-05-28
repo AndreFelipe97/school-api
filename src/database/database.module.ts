@@ -18,13 +18,12 @@ import { UserCourse } from 'src/entities/usersCourses.entity';
       useFactory: async (configService: ConfigService) => {
         return {
           type: configService.get('DATABASE_TYPE') as any,
-          host: configService.get('DATABASE_HOST'),
-          port: parseInt(configService.get('DATABASE_PORT')),
-          username: configService.get('DATABASE_USERNAME'),
-          password: configService.get('DATABASE_PASSWORD'),
-          database: configService.get('DATABASE') as string,
+          url: configService.get('DATABASE_URL'),
           entities: [User, Courses, UserCourse],
           synchronize: true,
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
       inject: [ConfigService],
