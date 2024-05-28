@@ -1,2 +1,2 @@
-export const userNotFound = 'User not found';
-export const passwordDoesNotMatch = 'Password does not match';
+export const userNotFound = 'Usuário não encontrado';
+export const passwordDoesNotMatch = 'Senhhas não combinam';

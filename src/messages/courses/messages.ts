@@ -1,2 +1,2 @@
-export const courseNotFound = 'Course not found';
-export const courseAlreadyExists = 'Course already exists';
+export const courseNotFound = 'Curso não encontrado';
+export const courseAlreadyExists = 'Curso já existe';

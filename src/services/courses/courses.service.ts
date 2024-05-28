@@ -12,11 +12,19 @@ export class CoursesService {
   ) { }
 
   async findAll(id?: number): Promise<Courses[]> {
-    const courses = await this.coursesRepository.query(`
-      select c.*, uc.id as userCourseId, uc."registrationCanceled", uc.registered  from courses c 
-      left join "usersCourses" uc 
-      on c.id = uc."courseId" ${id ? `${`and uc."userId" = ${id}`}` : ""}  
-    `);
+    let courses;
+
+    if (id) {
+      courses = await this.coursesRepository.query(`
+        select c.*, ${"uc.id as userCourseId,"} uc."registrationCanceled", uc.registered  from courses c 
+        left join "usersCourses" uc 
+        on c.id = uc."courseId" and uc."userId" = ${id}
+      `);
+
+      return courses;
+    }
+
+    courses = await this.coursesRepository.find();
 
     return courses;
   }

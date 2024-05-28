@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserCourse } from 'src/entities/usersCourses.entity';
 import { Repository } from 'typeorm';
 import { CoursesService } from '../courses/courses.service';
+import { registerNotFound, youAreAlreadyRegistered } from 'src/messages/usersCourses/messages';
 
 @Injectable()
 export class UsersCoursesService {
@@ -30,7 +31,7 @@ export class UsersCoursesService {
     `);
 
     if (userCourseExists.length) {
-      throw new BadRequestException("Você já está inscrito neste curso");
+      throw new BadRequestException(youAreAlreadyRegistered);
     }
 
     const userCourse = this.userCourseRepository.create({
@@ -65,7 +66,7 @@ export class UsersCoursesService {
     });
 
     if (!userCourse) {
-      throw new NotFoundException('Inscrição não encontrada');
+      throw new NotFoundException(registerNotFound);
     }
 
     await this.userCourseRepository.save(userCourse);
