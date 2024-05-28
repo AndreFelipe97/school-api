@@ -1,24 +1,24 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/users.entity';
 import { UserCourse } from 'src/entities/usersCourses.entity';
 import { Repository } from 'typeorm';
+import { CoursesService } from '../courses/courses.service';
 
 @Injectable()
 export class UsersCoursesService {
   constructor(
     @InjectRepository(UserCourse)
     private readonly userCourseRepository: Repository<UserCourse>,
+    private readonly courseService: CoursesService,
   ) { }
 
   async findByCoursesWithUserIdWhenIsActive(userId: number): Promise<UserCourse[]> {
-    const userCourse = await this.userCourseRepository.find({
-      where: {
-        userId,
-        registered: true,
-        registrationCanceled: false
-      }
-    });
+    const userCourse = await this.userCourseRepository.query(`
+      select c.id, c.name, c.description, c.cover, c.started, c.registrations, uc.registered, ${'uc."registrationCanceled"'} from "usersCourses" uc 
+      left join courses c 
+      on c.id = "courseId" 
+      where "userId" = ${userId}  and "registered" = true and "registrationCanceled" = false
+    `);
 
     return userCourse;
   }
@@ -41,6 +41,16 @@ export class UsersCoursesService {
     });
 
     await this.userCourseRepository.save(userCourse);
+
+    const course = await this.courseService.findById(courseId);
+
+    await this.courseService.update(
+      courseId,
+      {
+        ...course,
+        registrations: course.registrations + 1,
+      }
+    );
 
     return true;
   }
