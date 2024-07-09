@@ -18,7 +18,7 @@ import { UsersService } from 'src/services/users/users.service';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
@@ -47,7 +47,7 @@ export class UsersController {
       name,
       email,
       password,
-      birthdate
+      birthdate,
     });
 
     return response.status(204).send();

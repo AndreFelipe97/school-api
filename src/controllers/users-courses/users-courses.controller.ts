@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUsersCoursesDto, UpdateUsersCoursesDto } from 'src/dtos/Dto';
@@ -9,11 +18,14 @@ import { UsersCoursesService } from 'src/services/users-courses/users-courses.se
 @ApiTags('UsersCourses')
 @Controller('users-courses')
 export class UsersCoursesController {
-  constructor(private readonly usersCoursesService: UsersCoursesService) { }
+  constructor(private readonly usersCoursesService: UsersCoursesService) {}
 
   @Get(':userId')
   async index(@Param('userId') userId: number) {
-    const usersCourses = await this.usersCoursesService.findByCoursesWithUserIdWhenIsActive(userId);
+    const usersCourses =
+      await this.usersCoursesService.findByCoursesWithUserIdWhenIsActive(
+        userId,
+      );
 
     return usersCourses;
   }
@@ -41,7 +53,7 @@ export class UsersCoursesController {
       id,
       courseId,
       userId,
-      registrationCanceled
+      registrationCanceled,
     });
 
     return response.status(204).send();

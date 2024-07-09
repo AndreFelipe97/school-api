@@ -1,15 +1,15 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('usersCourses')
-export class UserCourse {
+@Entity('tramitacoes')
+export class Tramitacao {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  userId: number;
+  envio: Date;
   @Column()
-  courseId: number;
+  numero: string;
   @Column()
-  registrationCanceled: boolean;
+  situacao: string;
   @Column()
-  registered: boolean;
+  tramitado: Date;
 }

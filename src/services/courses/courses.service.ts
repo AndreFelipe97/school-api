@@ -1,7 +1,14 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Courses } from 'src/entities/courses.entity';
-import { courseAlreadyExists, courseNotFound } from 'src/messages/courses/messages';
+import {
+  courseAlreadyExists,
+  courseNotFound,
+} from 'src/messages/courses/messages';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -9,14 +16,14 @@ export class CoursesService {
   constructor(
     @InjectRepository(Courses)
     private readonly coursesRepository: Repository<Courses>,
-  ) { }
+  ) {}
 
   async findAll(id?: number): Promise<Courses[]> {
     let courses;
 
     if (id) {
       courses = await this.coursesRepository.query(`
-        select c.*, ${"uc.id as userCourseId,"} uc."registrationCanceled", uc.registered  from courses c 
+        select c.*, ${'uc.id as userCourseId,'} uc."registrationCanceled", uc.registered  from courses c 
         left join "usersCourses" uc 
         on c.id = uc."courseId" and uc."userId" = ${id}
       `);
@@ -43,10 +50,21 @@ export class CoursesService {
     return await this.coursesRepository.findOne({ where: { name } });
   }
 
-  async create({ name, description, cover, registrations, started }): Promise<boolean> {
-    const courseExists = await this.coursesRepository.findOne({ where: { name } });
+  async create({
+    name,
+    description,
+    cover,
+    registrations,
+    started,
+  }): Promise<boolean> {
+    const courseExists = await this.coursesRepository.findOne({
+      where: { name },
+    });
 
-    if (courseExists && courseExists.name.toLowerCase() === name.toLowerCase()) {
+    if (
+      courseExists &&
+      courseExists.name.toLowerCase() === name.toLowerCase()
+    ) {
       throw new BadRequestException(courseAlreadyExists);
     }
 
@@ -63,9 +81,14 @@ export class CoursesService {
     return true;
   }
 
-  async update(id: number, { name, description, cover, registrations, started }): Promise<boolean> {
+  async update(
+    id: number,
+    { name, description, cover, registrations, started },
+  ): Promise<boolean> {
     const oldCourse = await this.coursesRepository.findOne({ where: { id } });
-    const courseExists = await this.coursesRepository.findOne({ where: { name } });
+    const courseExists = await this.coursesRepository.findOne({
+      where: { name },
+    });
     const course = await this.coursesRepository.preload({
       id,
       name: name || oldCourse.name,

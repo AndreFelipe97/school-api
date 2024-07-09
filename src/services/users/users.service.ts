@@ -8,7 +8,11 @@ import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
-import { emailAlreadyExists, userAlreadyExists, userNotFound } from 'src/messages/users/messages';
+import {
+  emailAlreadyExists,
+  userAlreadyExists,
+  userNotFound,
+} from 'src/messages/users/messages';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +20,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();

@@ -3,7 +3,7 @@ import { UsersService } from 'src/services/users/users.service';
 
 @Injectable()
 export class UserSeedService {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   async create() {
     const userExist = await this.usersService.findByEmail('admin@gmail.com');

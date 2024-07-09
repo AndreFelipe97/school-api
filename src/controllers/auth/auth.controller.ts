@@ -10,6 +10,7 @@ export class AuthController {
 
   @Post()
   singIn(@Body() { email, password }: SignInDto): Promise<AuthResponseDto> {
+    console.log('Entrou no controller!');
     return this.authService.singIn(email, password);
   }
 }

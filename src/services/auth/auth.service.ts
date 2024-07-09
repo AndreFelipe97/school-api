@@ -11,11 +11,12 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   async singIn(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
-
+    console.log('Entrou no service!');
+    console.log(user);
     if (!user) {
       throw new UnauthorizedException(userNotFound);
     }

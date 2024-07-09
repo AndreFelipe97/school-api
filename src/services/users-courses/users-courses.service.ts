@@ -1,9 +1,16 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCourse } from 'src/entities/usersCourses.entity';
 import { Repository } from 'typeorm';
 import { CoursesService } from '../courses/courses.service';
-import { registerNotFound, youAreAlreadyRegistered } from 'src/messages/usersCourses/messages';
+import {
+  registerNotFound,
+  youAreAlreadyRegistered,
+} from 'src/messages/usersCourses/messages';
 
 @Injectable()
 export class UsersCoursesService {
@@ -11,9 +18,11 @@ export class UsersCoursesService {
     @InjectRepository(UserCourse)
     private readonly userCourseRepository: Repository<UserCourse>,
     private readonly courseService: CoursesService,
-  ) { }
+  ) {}
 
-  async findByCoursesWithUserIdWhenIsActive(userId: number): Promise<UserCourse[]> {
+  async findByCoursesWithUserIdWhenIsActive(
+    userId: number,
+  ): Promise<UserCourse[]> {
     const userCourse = await this.userCourseRepository.query(`
       select c.id, c.name, c.description, c.cover, c.started, c.registrations, uc.registered, ${'uc."registrationCanceled"'} from "usersCourses" uc 
       left join courses c 
@@ -45,18 +54,20 @@ export class UsersCoursesService {
 
     const course = await this.courseService.findById(courseId);
 
-    await this.courseService.update(
-      courseId,
-      {
-        ...course,
-        registrations: course.registrations + 1,
-      }
-    );
+    await this.courseService.update(courseId, {
+      ...course,
+      registrations: course.registrations + 1,
+    });
 
     return true;
   }
 
-  async update({ id, userId, courseId, registrationCanceled }): Promise<boolean> {
+  async update({
+    id,
+    userId,
+    courseId,
+    registrationCanceled,
+  }): Promise<boolean> {
     const userCourse = await this.userCourseRepository.preload({
       id,
       userId,
