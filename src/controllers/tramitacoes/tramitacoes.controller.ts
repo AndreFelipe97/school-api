@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -33,8 +34,20 @@ export class TramitacoesController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @Get()
-  async index(): Promise<ITramitacaoGetAll> {
-    const tramitacoes = await this.usersService.findAll();
+  async index(
+    @Query('numero') numero?: string,
+    @Query('days') days?: number,
+  ): Promise<ITramitacaoGetAll> {
+    let tramitacoes: ITramitacaoGetAll;
+    if (numero) {
+      tramitacoes = await this.usersService.findByNumero(numero);
+      return tramitacoes;
+    } else if (days) {
+      tramitacoes = await this.usersService.findByDays(days);
+      return tramitacoes;
+    }
+
+    tramitacoes = await this.usersService.findAll();
 
     return tramitacoes;
   }

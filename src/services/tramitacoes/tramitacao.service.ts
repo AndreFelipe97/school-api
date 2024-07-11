@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { userAlreadyExists, userNotFound } from 'src/messages/users/messages';
 import { Tramitacao } from 'src/entities/tramitacoes.entity';
@@ -63,6 +63,81 @@ export class TramitacoesService {
     }
 
     return { ...Tramitacao };
+  }
+
+  async findByNumero(numero: string): Promise<ITramitacaoGetAll> {
+    const totalPending = await this.tramitacaoRepository.count({
+      where: { situacao: 'pending', numero },
+    });
+
+    const totalAuthorized = await this.tramitacaoRepository.count({
+      where: { situacao: 'authorized', numero },
+    });
+
+    const totalUnauthorized = await this.tramitacaoRepository.count({
+      where: { situacao: 'unauthorized', numero },
+    });
+
+    const total = await this.tramitacaoRepository.count({
+      where: {
+        numero,
+      },
+    });
+    const tramitacoes = await this.tramitacaoRepository.find({
+      where: {
+        numero,
+      },
+    });
+    return {
+      totals: {
+        totalPending,
+        totalAuthorized,
+        totalUnauthorized,
+        total,
+      },
+      tramitacoes,
+    };
+  }
+
+  async findByDays(dias: number): Promise<ITramitacaoGetAll> {
+    const dataLimite = new Date();
+    console.log(dataLimite);
+    dataLimite.setDate(dataLimite.getDate() - dias);
+    console.log(dataLimite);
+
+    const totalPending = await this.tramitacaoRepository.count({
+      where: { situacao: 'pending', envio: MoreThan(dataLimite) },
+    });
+
+    const totalAuthorized = await this.tramitacaoRepository.count({
+      where: { situacao: 'authorized', envio: MoreThan(dataLimite) },
+    });
+
+    const totalUnauthorized = await this.tramitacaoRepository.count({
+      where: { situacao: 'unauthorized', envio: MoreThan(dataLimite) },
+    });
+
+    const total = await this.tramitacaoRepository.count({
+      where: {
+        envio: MoreThan(dataLimite),
+      },
+    });
+
+    const tramitacoes = await this.tramitacaoRepository.find({
+      where: {
+        envio: MoreThan(dataLimite),
+      },
+    });
+
+    return {
+      totals: {
+        totalPending,
+        totalAuthorized,
+        totalUnauthorized,
+        total,
+      },
+      tramitacoes,
+    };
   }
 
   async findByNumber(numero: string): Promise<Tramitacao> {
