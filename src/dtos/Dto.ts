@@ -6,8 +6,8 @@ import { CreateCoursesDto } from './courses/createCourses.dto';
 import { UpdateCoursesDto } from './courses/updateCourses.dto';
 import { CreateUsersCoursesDto } from './usersCourses/createUsersCourses.dto';
 import { UpdateUsersCoursesDto } from './usersCourses/updateUsersCourses.dto';
-import { CreateTramitacoesDto } from './Tramitacoes/createTramitacoes.dto';
-import { UpdateTramitacoesDto } from './Tramitacoes/updateTramitacoes.dto';
+import { CreateTramitacoesDto } from './tramitacoes/createTramitacoes.dto';
+import { UpdateTramitacoesDto } from './tramitacoes/updateTramitacoes.dto';
 
 export {
   CreateUsersDto,
